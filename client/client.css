@@ -1,0 +1,31 @@
+table {
+    table-layout: fixed;
+    word-wrap: break-word;
+}
+
+/*.auto-fluid{
+	width:auto;
+	min-width:100vw !important;
+}*/
+
+input[type=number].sminp{
+	border-radius: .25em;
+	border-style: solid;
+	border-width: 1px;
+	border-color: #999;
+	min-width:2em;
+	max-width:4em;	
+}
+
+#cd {
+    position: fixed;
+    /* center the element */
+    right: 0;
+    left: 0;
+    margin-right: auto;
+    margin-left: auto;
+    padding:2em;
+    /* give it dimensions */
+    /*min-height: 10em;*/
+    width: 50%;
+}

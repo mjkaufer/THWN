@@ -1,0 +1,234 @@
+<head>
+  <title>THWN</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0" />
+</head>
+
+<template name="layout">
+	{{> notifications}}
+	{{> yield}}
+</template>
+
+<template name="fullOrder">
+	{{#if loaded}}
+		{{> order}}
+	{{else}}
+		{{> loading}}
+	{{/if}}
+</template>
+
+<template name="loading">
+	<p>Loading...</p>
+</template>
+
+<template name="notFound">
+	<h2>Page not found...</h2>
+</template>
+
+
+<template name="hello">
+  <h1>Hello World!</h1>
+  {{greeting}}
+  <input type="button" value="Click" />
+</template>
+
+<template name="test1">
+	<p>{{test}}</p>
+</template>
+
+<template name="order">
+	<table class="table auto-fluid">
+		<tbody>
+			{{#each categories}}
+				<h2>{{this.type}}</h2>
+				<tr>
+					<th>Name</th>
+					<th>Price</th>
+					<th>Quantity</th>
+				</tr>
+					{{#each meals this.type}}
+						<tr>
+							<td>{{name}}</td>
+							<td>${{mf price}}</td>
+							<td>
+								<!-- <input type="number" id="{{_id}}" min="0" max="100" value="0"> -->
+								<input type="number" id="{{_id}}" min="0" value="0" class="sminp">
+
+							</td>
+						</tr>
+					{{else}}
+						<h4>No meals in this category!</h4>
+					{{/each}}
+			{{/each}}
+		</tbody>
+	</table>
+
+	<form class="form-inline" role="form">
+	  <div class="form-group">
+	    <input type="text" class="form-control" id="orderer" placeholder="Your Full Name">
+	  </div>
+	  <div class="form-group">
+	    <input type="text" class="form-control" id="email" placeholder="Your Email Address"> <!-- There's some bootstrap bug with type="email" -->
+	  </div>
+	  <div class="form-group">
+		<select id="loc" class="form-control">
+		    <option value="default" disabled="disabled" selected="selected">Select a location</option>
+			{{#each locations}}
+				<option value="{{name}}">{{name}}</option>
+			{{/each}}
+		</select>
+	  </div>
+	</form>
+
+
+	<hr>
+	<button class="btn btn-success" id="checkout">Checkout</button>
+</template>
+
+<template name="acp">
+
+	{{#if loaded}}
+
+		<h2>Categories</h2>
+		<table class="table">
+			<tbody>
+				<tr>
+					<th>Category</th>
+					<th>Display Priority</th>
+					<th></th>
+				</tr>
+				{{#each categories}}
+					<tr>
+						<td>{{type}}</td>
+						<td>{{priority}}</td>
+						<td>
+							<button class="btn btn-danger removeCategory" id="{{_id}}">Remove</button>
+						</td>
+					</tr>
+				{{/each}}
+				<tr>
+					<td>
+						<input type="text" class="form-control" placeholder="Category Name" id="categoryType">
+					</td>
+					<td>
+						<input type="number" class="form-control" placeholder="Priority" id="categoryPriority">
+					</td>
+					<td>
+						<button class="btn btn-success" id="addCategory">Add</button>
+					</td>
+				</tr>
+
+			</tbody>
+		</table>
+
+		<h2>Meals</h2>
+		<table class="table">
+			<tbody>
+				<tr>
+					<th>Meal</th>
+					<th>Category</th>
+					<th>Price</th>
+					<th></th>
+				</tr>
+				{{#each listMeals}}
+					<tr>
+						<td>{{name}}</td>
+						<td>{{category}}</td>
+						<td>${{mf price}}</td>
+						<td>
+							<button class="btn btn-danger removeMeal" id="{{_id}}">Remove</button>
+						</td>
+					</tr>
+				{{/each}}
+				<tr>
+					<td>
+						<input type="text" class="form-control" placeholder="Meal Name" id="mealName">
+					</td>
+					<td>
+						<select id="mealCategory" class="form-control">
+						    <option value="default" disabled="disabled" selected="selected">Category</option>
+							{{#each categories}}
+								<option value="{{type}}">{{type}}</option>
+							{{/each}}
+						</select>
+					</td>
+					<td>
+						<input type="text" class="form-control" placeholder="Price" id="mealPrice"> <!-- number type messes up if a $ is added -->
+					</td>
+					<td>
+						<button class="btn btn-success" id="addMeal">Add</button>
+					</td>
+				</tr>
+
+			</tbody>
+		</table>
+
+	{{else}}
+		{{> loading}}
+	{{/if}}
+
+
+</template>
+
+<template name="orders">
+
+</template>
+
+
+<template name="notifications">
+  
+  <div id="cd" style="position:fixed;top:2em;">
+    {{#each alerts}}
+      <div class="alert alert-{{type}}" id="{{_id}}">
+        {{message}}
+      </div>
+    {{/each}}
+  </div>  
+  
+</template>
+
+<template name="confirm">
+
+
+{{#each getCart}} <!-- Should only be one thing... -->
+
+	<h2>Your Order</h2>
+
+	<p>Your name: {{customer}}</p>
+	<p>Your email: {{email}}</p>
+	<p>Your location: {{location}}</p>
+	<p>Your order:</p>
+
+	<table class="table">
+		<tbody>
+			<tr>
+				<td>Name</td>
+				<td>Price</td>
+				<td>Amount</td>
+				<td>Total</td>
+			</tr><!-- Looks ugly in thead -->		
+			{{#each order}}
+				<tr>
+					<td>{{name}}</td>
+					<td>${{mf price}}</td>
+					<td>{{count}}</td>
+					<td>{{mm price count}}</td>
+				</tr>
+			{{/each}}
+			<tr>
+				<td></td>
+				<td></td>
+				<td>{{items}}</td>
+				<td>${{mf total}}</td>
+			</tr>
+		</tbody>
+	</table>
+
+
+	<p>Total price: ${{mf total}}</p>
+{{else}}
+	<h2>You don't have anything in your cart!</h2>
+{{/each}}
+
+<button class="btn btn-success" id="fin">Finalize Order</button>
+
+</template>
