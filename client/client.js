@@ -79,6 +79,7 @@ UI.registerHelper('mm', function(price, count){
 Template.confirm.events({
   'click #fin': function(){
       Orders.insert(Cart.findOne({}));
+      Router.go('complete')
       Cart.remove({});
   }
 
@@ -116,7 +117,7 @@ Template.order.events({
       else if(orderArray.length == 0)
         alertFlash('You haven\t selected any items!', 'danger', 3000, 500);          
       else{
-        Cart.insert({order: orderArray, location: $('#loc').val(), email: $('#email').val(), customer: $('#orderer').val(),total: sum,items:its});
+        Cart.insert({order: orderArray, location: $('#loc').val(), email: $('#email').val(), customer: $('#orderer').val(),total: sum,items:its, handled:false});
         alertFlash('Order placed in cart.', 'success', 1000, 100, function(){Router.go('confirm');})
         //Router.go('checkout') or somethin
       }

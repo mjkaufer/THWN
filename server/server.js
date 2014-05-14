@@ -1,4 +1,3 @@
-
 Meteor.startup(function () {
   // code to run on server at startup
 });
@@ -6,7 +5,6 @@ if(Meals.find().count() == 0 || Categories.find().count() == 0)
 {
   Meals.remove({});
   Categories.remove({});
-
 
   Categories.insert({type:"Soup", priority:10});    
   Categories.insert({type:"Granola Bar", priority:5});

@@ -16,6 +16,7 @@ Router.map(function() {
   this.route('fullOrder', {path: '/'});
   this.route('acp');
   this.route('confirm');
+  this.route('complete');
 });
 
 
